@@ -12,4 +12,3 @@ Each assignment resides in it's own directory:
 View their individual readme files for more information
 
 All files have been indented using 2 spaces and lines are no longer than 80 characters
-
