@@ -40,14 +40,14 @@ yourself be confused by the terminology.
 You should not need any additional classes, but if you would like additional
 methods, feel free to write (and test!) them.
 
-### Classes and methods
+## Classes and methods
 
 Create the following classes.
 
 All classes should be defined in a file named `library.rb`, and all test
 classes should be in a separate file named `library_test.rb`.
 
-#### class Calendar
+### class Calendar
 
 We need to deal with the passage of time, so we need to keep track of dates.
 Ruby has a perfectly good `Time` class, but to keep things simple, we will just
@@ -65,7 +65,7 @@ Returns (as an integer) the current date.
 #### advance()
 Increment the date (move ahead to the next day), and returns the new date.
 
-#### class Book
+### class Book
 
 A book has these attributes (instance variables): `id`, `title`, `author` (only
 one author per book), and `due_date`. The due date is `nil` if the book is not
@@ -96,7 +96,7 @@ Sets the due date of this Book to `nil`. Doesn't return anything.
 ### to_s()
 Returns a string of the form "`id`: `title`, by `author`”.
 
-#### class Member
+### class Member
 
 A member is a "customer" of the library. A member must have a library card in
 order to check out books. A member with a card may have no more than three books
