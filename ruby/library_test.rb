@@ -10,6 +10,7 @@ puts lib.open
 # Todo
 
 # Implement the remainder of the methods
+# Write the tests
 
 
 
