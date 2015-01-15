@@ -1,5 +1,5 @@
 # Software and Programming Paradigms
-### Birkbeck School of Computer Science
+### Birkbeck Department of Computing and Information Systems
 
 Those are the portifolio items for the 2014/15 coursework
 
