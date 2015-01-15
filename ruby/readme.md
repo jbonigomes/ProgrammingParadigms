@@ -71,29 +71,29 @@ A book has these attributes (instance variables): `id`, `title`, `author` (only
 one author per book), and `due_date`. The due date is `nil` if the book is not
 checked out.
 
-### initialize(id, title, author)
+#### initialize(id, title, author)
 The constructor. Saves the provided information. When created, the book is not
 checked out.
 
-### get_id()
+#### get_id()
 Returns this book's unique identification number.
 
-### get_title()
+#### get_title()
 Returns this book's title.
 
-### get_author()
+#### get_author()
 Returns this book's author.
 
-### get_due_date()
+#### get_due_date()
 Returns the date (as an integer) that this book is due.
 
-### check_out(due_date)
+#### check_out(due_date)
 Sets the due date of this Book. Doesn't return anything.
 
-### check_in()
+#### check_in()
 Sets the due date of this Book to `nil`. Doesn't return anything.
 
-### to_s()
+#### to_s()
 Returns a string of the form "`id`: `title`, by `author`”.
 
 ### class Member
