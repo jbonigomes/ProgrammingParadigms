@@ -4,4 +4,4 @@
 - All classes are under library.rb
 - To execute this program, please ensure to run it from within the ruby dir:
 
-	ruby library_test.rb
+		ruby library_test.rb
