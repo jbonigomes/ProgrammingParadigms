@@ -36,7 +36,7 @@ the temperate in both Fahrenheit and Celsius (your program does not need a fancy
 user interface, simple textual output is sufficient). The three actors therefore
 pass messages between themselves in a pipeline, as shown below:
 
-		Controller Actor =⇒ Temperature Convertor Actor =⇒ Display Actor
+		Controller Actor => Temperature Convertor Actor => Display Actor
 
 The actors may need to be driven by some form of main program, depending on the
 message passing system used; you should write whatever supporting infrastructure
