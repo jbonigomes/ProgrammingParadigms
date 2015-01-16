@@ -12,24 +12,6 @@ if it can be solved using the algorithm described below.
 Here is an example of an easy Sudoku puzzle that you program should be able to
 solve.
 
-|  a  |  b  |  c  |  d  |  e  |  f  |  g  |  h  |  i  |
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|     |  2  |  5  |     |     |  1  |     |     |     |
-|  1  |     |  4  |  2  |  5  |     |     |     |     |
-|     |     |  6  |     |     |  4  |  2  |  1  |     |
-|     |  5  |     |     |     |     |  3  |  2  |     |
-|  6  |     |     |     |  2  |     |     |     |  9  |
-|     |  8  |  7  |     |     |     |     |  6  |     |
-|     |  9  |  1  |  5  |     |     |  6  |     |     |
-|     |     |     |     |  7  |  8  |  1  |     |  3  |
-|     |     |     |  6  |     |     |  5  |  9  |     |
-
-
-
-
-
-
-
 <table>
 	<tbody>
 		<tr>
@@ -133,10 +115,6 @@ solve.
 		</tr>
 	</tbody>
 </table>
-
-
-
-
 
 ### How to play
 
