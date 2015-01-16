@@ -12,6 +12,7 @@ if it can be solved using the algorithm described below.
 Here is an example of an easy Sudoku puzzle that you program should be able to
 solve.
 
+|  a  |  b  |  c  |  d  |  e  |  f  |  g  |  h  |  i  |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |     |  2  |  5  |     |     |  1  |     |     |     |
 |  1  |     |  4  |  2  |  5  |     |     |     |     |
