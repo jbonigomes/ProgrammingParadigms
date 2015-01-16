@@ -24,6 +24,120 @@ solve.
 |     |     |     |     |  7  |  8  |  1  |     |  3  |
 |     |     |     |  6  |     |     |  5  |  9  |     |
 
+
+
+
+
+
+
+<table>
+	<tbody>
+		<tr>
+			<td align="center"></td>
+			<td align="center">2</td>
+			<td align="center">5</td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center">1</td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+		</tr>
+		<tr>
+			<td align="center">1</td>
+			<td align="center"></td>
+			<td align="center">4</td>
+			<td align="center">2</td>
+			<td align="center">5</td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+		</tr>
+		<tr>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center">6</td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center">4</td>
+			<td align="center">2</td>
+			<td align="center">1</td>
+			<td align="center"></td>
+		</tr>
+		<tr>
+			<td align="center"></td>
+			<td align="center">5</td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center">3</td>
+			<td align="center">2</td>
+			<td align="center"></td>
+		</tr>
+		<tr>
+			<td align="center">6</td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center">2</td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center">9</td>
+		</tr>
+		<tr>
+			<td align="center"></td>
+			<td align="center">8</td>
+			<td align="center">7</td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center">6</td>
+			<td align="center"></td>
+		</tr>
+		<tr>
+			<td align="center"></td>
+			<td align="center">9</td>
+			<td align="center">1</td>
+			<td align="center">5</td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center">6</td>
+			<td align="center"></td>
+			<td align="center"></td>
+		</tr>
+		<tr>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center">7</td>
+			<td align="center">8</td>
+			<td align="center">1</td>
+			<td align="center"></td>
+			<td align="center">3</td>
+		</tr>
+		<tr>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center">6</td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center">5</td>
+			<td align="center">9</td>
+			<td align="center"></td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+
+
 ### How to play
 
 Fill in the grid so that every row, every column and every 3x3 box contains the
