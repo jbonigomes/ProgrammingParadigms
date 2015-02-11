@@ -1,4 +1,4 @@
-#lang racket
+#lang racket/base
 
 ; 1. What do the following Racket expressions evaluate to?
 
@@ -32,7 +32,6 @@
 
 ; (define (average x y) (/ (+ x y) 2))
 ; (average 4 8)
-; 
 
 
 
@@ -101,9 +100,7 @@
 
 ; (append '(2) (list 4))
 
-; (define (reduce-horizontal number row) (map (lambda(set) (if (list? set) (remove number set) set)) row))
-
-(define (reduce number list) (remove number list))
+(define number-to-remove 0)
 
 (define (transform matrix)
   (map (lambda (list)
@@ -113,18 +110,20 @@
                     number)) list)) matrix))
 
 (define (solve matrix)
-  (for ([row (transform matrix)])
-    (for ([set row])
-      (if (list? set) #f (reduce set row)))))
+  (reduce-matrix 0 (transform matrix)))
 
-; (define (solve matrix)
-;   (map (lambda (row)
-;          (map (lambda (set)
-;                 (if (list? set)
-;                     set
-;                     set)) row))
-;        (transform matrix)))
+(define (reduce-set number set) (remove number set))
 
+(define (reduce-row number row)
+  (map (lambda (set)
+         (reduce-set number set)) row))
+
+(define (reduce-matrix number matrix)
+  (map (lambda (row)
+         (map (lambda (set)
+                (if (list? set)
+                    (reduce-set (remove number-to-remove set) set)
+                    (set! number-to-remove set))) row)) matrix))
 
 (solve '((0 2 5 0 0 1 0 0 0)
          (1 0 4 2 5 0 0 0 0)
@@ -135,3 +134,6 @@
          (0 9 1 5 0 0 6 0 0)
          (0 0 0 0 7 8 1 0 3)
          (0 0 0 6 0 0 5 9 0)))
+
+
+
