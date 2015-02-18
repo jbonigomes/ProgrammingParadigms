@@ -1,4 +1,4 @@
-#lang racket/base
+#lang racket
 
 ; 1. What do the following Racket expressions evaluate to?
 
@@ -100,8 +100,6 @@
 
 ; (append '(2) (list 4))
 
-(define number-to-remove 0)
-
 (define (transform matrix)
   (map (lambda (list)
          (map (lambda (number)
@@ -110,20 +108,7 @@
                     number)) list)) matrix))
 
 (define (solve matrix)
-  (reduce-matrix 0 (transform matrix)))
-
-(define (reduce-set number set) (remove number set))
-
-(define (reduce-row number row)
-  (map (lambda (set)
-         (reduce-set number set)) row))
-
-(define (reduce-matrix number matrix)
-  (map (lambda (row)
-         (map (lambda (set)
-                (if (list? set)
-                    (reduce-set (remove number-to-remove set) set)
-                    (set! number-to-remove set))) row)) matrix))
+  (transform matrix))
 
 (solve '((0 2 5 0 0 1 0 0 0)
          (1 0 4 2 5 0 0 0 0)
@@ -134,6 +119,3 @@
          (0 9 1 5 0 0 6 0 0)
          (0 0 0 0 7 8 1 0 3)
          (0 0 0 6 0 0 5 9 0)))
-
-
-
