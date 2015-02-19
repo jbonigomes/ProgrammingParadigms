@@ -100,8 +100,6 @@
 
 ; (append '(2) (list 4))
 
-(define PI 3.14)
-
 (define (transform matrix)
   (map (lambda (list)
          (map (lambda (number)
@@ -109,15 +107,8 @@
                     (build-list 9 (lambda (x) (+ 1 x)))
                     number)) list)) matrix))
 
-(define (test matrix reducer)
-  (map (lambda (list)
-         (map (lambda (number)
-                (if (list? number)
-                    (remove reducer number)
-                    number)) list)) matrix))
-
 (define (solve matrix)
-  (test (transform matrix) PI))
+  (transform matrix))
 
 (solve '((0 2 5 0 0 1 0 0 0)
          (1 0 4 2 5 0 0 0 0)
