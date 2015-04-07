@@ -75,31 +75,12 @@ class Library
 
   include Singleton
 
-  def initialize
-
-    book_id = 0
-
-    @books = Hash.new
-
-    File.open('collection.txt').each do |line|
-      
-      book_id += 1
-
-      title, author = line.split(/, /)
-
-      @books[book_id] = Book.new book_id, title, author
-
-    end
-
-    @calendar = Calendar.instance
-
-    # Define an empty dictionary of members. The keys will be the names
-    # of members and the values will be the corresponding Member objects.
-    @members = Hash.new
-
-    @isOpen = false
-
-    # Sets the current member (the one being served) to nil
+  def initialize books, calendar
+    @books             = books
+    @calendar          = calendar
+    @members           = Hash.new
+    @isOpen            = false
+    @memberBeingServed = null
   end
 
   def open
@@ -124,47 +105,33 @@ class Library
   def issue_card name_of_member
     raise StandardError, 'The library is not open!' unless @isOpen
 
-    # Issues a library card to the person with this name.
-
-    # However, no member should be permitted to have more than one library card.
-
-    # Returns either "Library card issued to name_of_member." or
-    # "name_of_member already has a library card.”.
-
-    # Possible Exception: "The library is not open.".
+    # If membet does not exist in the array
+      # Add member to array
+      # return "Library card issued to name_of_member."
+    # Else
+      # return "name_of_member already has a library card.”
   end
 
   def serve name_of_member
     raise StandardError, 'The library is not open!' unless @isOpen
+    
+    # foundmember = find member in the array by name
 
-    # Specifies which member is about to be served (and quits serving the
-    # previous member, if any).
+    # raise StandardError, name_of_member + ' does not have a library card.' unless @foundmember
+    
+    # @memberBeingServed = foundmember
 
-    # The purpose of this method is so that you don't have to type in the
-    # person's name again and again for every book that is to be checked in or
-    # checked out.
-
-    # What the method should actually do is to look up the member's name in the
-    # dictionary, and save the returned Member object in a data variable of this
-    # library.
-
-    # Returns either "Now serving name_of_member." or
-    # "name_of_member does not have a library card.".
-
-    # Possible Exception: "The library is not open."
+    # return "Now serving name_of_member."
   end
 
   def find_overdue_books
     raise StandardError, 'The library is not open!' unless @isOpen
+    raise StandardError, 'No member is currently being served.' unless @memberBeingServed
 
     # Prints a multiline string, each line containing one book (as returned
     # by the book's to_s method), of the books that have been checked out by the
     # member currently being served, and which are overdue. If the member has no
     # overdue books, the string “None” is printed.
-
-    # May throw an Exception with an appropriate message:
-    #  • "The library is not open.”
-    #  • "No member is currently being served.”
   end
 
   def check_in *book_numbers # * = 1..n of book numbers
