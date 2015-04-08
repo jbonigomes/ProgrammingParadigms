@@ -71,30 +71,67 @@ end
 
 class Library
 
-  attr_reader :calendar
+  # attr_reader :calendar
 
   include Singleton
 
-  def initialize books, calendar
-    @books             = books
-    @calendar          = calendar
-    @members           = Hash.new
-    @isOpen            = false
-    @memberBeingServed = null
+  @@books    = nil
+  @@calendar = nil
+
+  def self.books= books
+    @@books = books
+  end
+
+  def self.calendar= calendar
+    @@calendar = calendar
+  end
+
+  def self.members= members
+    @@members = members
+  end
+
+  def initialize
+    @isOpen  = false
+    @serving = nil
   end
 
   def open
     raise StandardError, 'The library is already open!' if @isOpen
 
-    @calendar.advance
+    @@calendar.advance
 
     @isOpen = true
 
-    "Today is day #{@calendar.date}"
+    "Today is day #{@@calendar.date}"
+  end
+
+  def issue_card member
+    raise StandardError, 'The library is not open!' unless @isOpen
+    raise StandardError, 'Member already exist' if @@members.has_key?(member.name)
+
+    @@members[member.name] = member
+
+    "Library card issued to #{member.name}."
+  end
+
+  def serve member
+    raise StandardError, 'The library is not open!' unless @isOpen
+    raise StandardError, 'Member does not have a library card.' unless @@members.has_key?(member.name)
+    
+    @serving = member.name
+
+    "Now serving #{member.name}."
   end
 
   def find_all_overdue_books
     raise StandardError, 'The library is not open!' unless @isOpen
+
+    @@members.each do |key, member|
+      puts key
+      puts member
+
+      # "#{@name}: #{notice}"
+    end
 
     # Prints a nicely formatted, multiline string, listing the names of
     # members who have overdue books, and for each such member, the
@@ -102,31 +139,9 @@ class Library
     # overdue.”.
   end
 
-  def issue_card name_of_member
-    raise StandardError, 'The library is not open!' unless @isOpen
-
-    # If membet does not exist in the array
-      # Add member to array
-      # return "Library card issued to name_of_member."
-    # Else
-      # return "name_of_member already has a library card.”
-  end
-
-  def serve name_of_member
-    raise StandardError, 'The library is not open!' unless @isOpen
-    
-    # foundmember = find member in the array by name
-
-    # raise StandardError, name_of_member + ' does not have a library card.' unless @foundmember
-    
-    # @memberBeingServed = foundmember
-
-    # return "Now serving name_of_member."
-  end
-
   def find_overdue_books
     raise StandardError, 'The library is not open!' unless @isOpen
-    raise StandardError, 'No member is currently being served.' unless @memberBeingServed
+    raise StandardError, 'No member is currently being served.' if @serving.nil?
 
     # Prints a multiline string, each line containing one book (as returned
     # by the book's to_s method), of the books that have been checked out by the
@@ -134,8 +149,10 @@ class Library
     # overdue books, the string “None” is printed.
   end
 
-  def check_in *book_numbers # * = 1..n of book numbers
+  def check_in *book_ids # * = 1..n of book numbers
     raise StandardError, 'The library is not open!' unless @isOpen
+    raise StandardError, 'No member is currently being served.' unless @serving
+    # raise StandardError, 'The library does not have book id' unless @serving.books_ids
 
     # The book is being returned by the current member (there must be one!), so 
     # return it to the collection and remove it from the set of books currently
@@ -147,15 +164,12 @@ class Library
     # in and returning the Book to this library's collection of available Books.
 
     # If successful, returns "name_of_member has returned n books.”.
-
-    # May throw an Exception with an appropriate message:
-    #  • "The library is not open."
-    #  • "No member is currently being served."
-    #  • "The member does not have book id.”
   end
 
   def check_out *book_ids # 1..n book_ids
     raise StandardError, 'The library is not open!' unless @isOpen
+    raise StandardError, 'No member is currently being served.' unless @serving
+    # raise StandardError, 'The library does not have book id' unless book_ids
 
     # Checks out the book to the member currently being served (there
     # must be one!), or tells why the operation is not permitted.
@@ -167,26 +181,18 @@ class Library
     # of available books.
 
     # If successful, returns "n books have been checked out to name_of_member.".
-
-    # May throw an Exception with an appropriate message:
-    #  • "The library isnot open."
-    #  • "No member is currently being served."
-    #  • "The library does not have bookid."
   end
 
   def renew *book_ids # 1..n book_ids
     raise StandardError, 'The library is not open!' unless @isOpen
+    raise StandardError, 'No member is currently being served.' unless @serving
+    # raise StandardError, 'The library does not have book id' unless book_ids
 
     # Renews the books for the member currently being served (by setting their
     # due dates to today's date plus 7) or tells why the operation is not
     # permitted.
 
     # If successful, returns "n books have been renewed for name_of_member.".
-
-    # May throw an Exception with an appropriate message:
-    #  • "The library is not open."
-    #  • "No member is currently being served."
-    #  • "The member does not have book id."
   end
 
   def close
