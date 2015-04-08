@@ -48,10 +48,9 @@ class Member
 
   attr_reader :name, :books
 
-  def initialize name, library
-    @name    = name
-    @library = library
-    @books   = Hash.new
+  def initialize name
+    @name  = name
+    @books = Hash.new
   end
 
   def check_out book
@@ -71,28 +70,23 @@ end
 
 class Library
 
-  # attr_reader :calendar
-
   include Singleton
-
-  @@books    = nil
-  @@calendar = nil
 
   def self.books= books
     @@books = books
-  end
-
-  def self.calendar= calendar
-    @@calendar = calendar
   end
 
   def self.members= members
     @@members = members
   end
 
+  def self.calendar= calendar
+    @@calendar = calendar
+  end
+
   def initialize
-    @isOpen  = false
-    @serving = nil
+    @isOpen   = false
+    @serving  = nil
   end
 
   def open
@@ -118,81 +112,90 @@ class Library
     raise StandardError, 'The library is not open!' unless @isOpen
     raise StandardError, 'Member does not have a library card.' unless @@members.has_key?(member.name)
     
-    @serving = member.name
+    @serving = member
 
     "Now serving #{member.name}."
+  end
+
+  def check_out *books
+    raise StandardError, 'The library is not open!' unless @isOpen
+    raise StandardError, 'No member is currently being served.' unless @serving
+
+    books.each do |book|
+      raise StandardError, "The library does not have book id #{book.id}" unless @@books.has_key?(book.id)
+
+      book.check_out @@calendar.date + 7
+      @serving.check_out @@books.delete book.id
+    end
+
+    "#{books.length} books have been checked out to #{@serving.name}."
+  end
+
+  def check_in *books
+    raise StandardError, 'The library is not open!' unless @isOpen
+    raise StandardError, 'No member is currently being served.' unless @serving
+
+    books.each do |book, some|
+      raise StandardError, "The member does not have book id #{book.id}" unless @serving.books.has_key?(book.id)
+      book.check_in
+      @@books[book.id] = book
+      @serving.give_back book
+    end
+
+    "#{@serving.name} has returned #{books.length} books."
+  end
+
+  def renew *books
+    raise StandardError, 'The library is not open!' unless @isOpen
+    raise StandardError, 'No member is currently being served.' unless @serving
+
+    books.each do |book|
+      raise StandardError, "The member does not have book id #{book.id}" unless @serving.books.has_key?(book.id)
+      book.check_out @@calendar.date + 7
+    end
+
+    "#{books.length} books have been renewed for #{@serving.name}."
   end
 
   def find_all_overdue_books
     raise StandardError, 'The library is not open!' unless @isOpen
 
-    @@members.each do |key, member|
-      puts key
-      puts member
+    overdue = "\n"
 
-      # "#{@name}: #{notice}"
+    @@members.each do |key, member|
+      if member.books.empty?
+        overdue += member.send_overdue_notice 'No books are overdue'
+      else
+        overdue += member.send_overdue_notice 'Books due:'
+
+        member.books.each do |bookkey, book|
+          overdue += "\n\t"
+          overdue += book.to_s
+        end
+      end
     end
 
-    # Prints a nicely formatted, multiline string, listing the names of
-    # members who have overdue books, and for each such member, the
-    # books that are overdue. Or, the string "No books are
-    # overdue.”.
+    overdue
   end
 
   def find_overdue_books
     raise StandardError, 'The library is not open!' unless @isOpen
     raise StandardError, 'No member is currently being served.' if @serving.nil?
 
-    # Prints a multiline string, each line containing one book (as returned
-    # by the book's to_s method), of the books that have been checked out by the
-    # member currently being served, and which are overdue. If the member has no
-    # overdue books, the string “None” is printed.
-  end
+    overdue = "\n"
 
-  def check_in *book_ids # * = 1..n of book numbers
-    raise StandardError, 'The library is not open!' unless @isOpen
-    raise StandardError, 'No member is currently being served.' unless @serving
-    # raise StandardError, 'The library does not have book id' unless @serving.books_ids
+    if @serving.books.empty?
+      overdue = @serving.send_overdue_notice "Member #{@serving.name} has no books overdue"
+    else
+      overdue = @serving.send_overdue_notice 'Books due:'
 
-    # The book is being returned by the current member (there must be one!), so 
-    # return it to the collection and remove it from the set of books currently
-    # checked out to the member.
+      @serving.books.each do |key, book|
+        overdue += "\n\t"
+        overdue += book.to_s
+      end
+    end
 
-    # The book_numbers are taken from the list printed by the search command.
-
-    # Checking in a Book will involve both telling the Book that it is checked
-    # in and returning the Book to this library's collection of available Books.
-
-    # If successful, returns "name_of_member has returned n books.”.
-  end
-
-  def check_out *book_ids # 1..n book_ids
-    raise StandardError, 'The library is not open!' unless @isOpen
-    raise StandardError, 'No member is currently being served.' unless @serving
-    # raise StandardError, 'The library does not have book id' unless book_ids
-
-    # Checks out the book to the member currently being served (there
-    # must be one!), or tells why the operation is not permitted.
-
-    # The book_ids could have been found by a recent call to the search method.
-
-    # Checking out a book will involve both telling the book that
-    # it is checked out and removing the book from this library's collection
-    # of available books.
-
-    # If successful, returns "n books have been checked out to name_of_member.".
-  end
-
-  def renew *book_ids # 1..n book_ids
-    raise StandardError, 'The library is not open!' unless @isOpen
-    raise StandardError, 'No member is currently being served.' unless @serving
-    # raise StandardError, 'The library does not have book id' unless book_ids
-
-    # Renews the books for the member currently being served (by setting their
-    # due dates to today's date plus 7) or tells why the operation is not
-    # permitted.
-
-    # If successful, returns "n books have been renewed for name_of_member.".
+    overdue
   end
 
   def close

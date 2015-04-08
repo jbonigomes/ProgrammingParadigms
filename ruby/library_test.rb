@@ -1,8 +1,10 @@
 # Get our library
 require_relative 'library.rb'
 
+
 # Mock a Calendar
 calendar = Calendar.instance
+
 
 # Mock some Books
 book_id = 0
@@ -14,6 +16,9 @@ File.open('collection.txt').each do |line|
   book_id += 1
 end
 
+book_not_in_library = Book.new 99, 'A bogus book', 'A famous author'
+
+
 # Mock a Library
 Library.books    = books 
 Library.calendar = calendar
@@ -21,14 +26,16 @@ Library.members  = Hash.new
 
 library = Library.instance
 
+
 # Mock some Members
 members = Hash.new
 
-members[0] = Member.new 'Oliver', library
-members[1] = Member.new 'Jack', library
-members[2] = Member.new 'Charlie', library
-members[3] = Member.new 'Emily', library
-members[4] = Member.new 'Chloe', library
+members[0] = Member.new 'Oliver'
+members[1] = Member.new 'Jack'
+members[2] = Member.new 'Charlie'
+members[3] = Member.new 'Emily'
+members[4] = Member.new 'Chloe'
+
 
 # time to ensure all classes have been created and work
 
@@ -39,6 +46,7 @@ members[4] = Member.new 'Chloe', library
 
 # puts calendar.date
 
+
 # book
 # puts books[0].to_s
 # puts books[0].due_date
@@ -48,6 +56,7 @@ members[4] = Member.new 'Chloe', library
 
 # books[0].check_in
 # puts books[0].due_date
+
 
 # member
 # puts members[0].name
@@ -89,31 +98,53 @@ puts library.open
 # will test this later
 
 
-# try to add a member twice
+# add a member
 library.issue_card members[0]
+
+
+# try to add a member twice
 # library.issue_card members[0]
 
 
 # serve a member that does not have a library card
 # library.serve members[1]
+
+
+# no member being served
+# library.check_in 1
+# library.check_out 1
+# library.renew 1
+
+
+# serve a member
 library.serve members[0]
 
 
-# no member being served exception test
-library.find_overdue_books
-# library.check_in
-# library.check_out
-# library.renew
+# check out a book that does not exist
+# library.check_out book_not_in_library
+
+
+# checkout 5 real books
+library.check_out books[0], books[5], books[10], books[15], books[20]
+
+
+# check a couple of book back in
+library.check_in members[0].books[0], members[0].books[5]
+
+
+# renew a couple of books
+library.renew members[0].books[10], members[0].books[15]
 
 
 # find all overdue books
-# puts library.find_all_overdue_books
+puts library.find_all_overdue_books
+
+
+# the member does not have book id
 
 
 # find_overdue_books
-# check_in
-# check_out
-# renew
+library.find_overdue_books
 
 
 # close
