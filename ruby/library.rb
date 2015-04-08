@@ -19,7 +19,7 @@ end
 
 
 class Book
-  
+
   attr_reader :id, :title, :author, :due_date
 
   def initialize id, title, author
@@ -111,7 +111,7 @@ class Library
   def serve member
     raise StandardError, 'The library is not open!' unless @isOpen
     raise StandardError, 'Member does not have a library card.' unless @@members.has_key?(member.name)
-    
+
     @serving = member
 
     "Now serving #{member.name}."
