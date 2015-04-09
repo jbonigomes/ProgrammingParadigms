@@ -5,7 +5,7 @@
 
 ### Running the tests
 
-- To execute this program, please ensure to run it from within the ruby dir:
+- To execute this program, please ensure to run it from within the ruby dir of this repo:
 
  ruby library_test.rb
 

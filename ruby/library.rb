@@ -1,5 +1,5 @@
 
-require 'singleton'
+require "singleton"
 
 class Calendar
 
@@ -90,7 +90,9 @@ class Library
   end
 
   def open
-    raise StandardError, 'The library is already open!' if @isOpen
+    if @isOpen
+      raise "The library is already open!"
+    end
 
     @@calendar.advance
 
@@ -100,8 +102,13 @@ class Library
   end
 
   def issue_card member
-    raise StandardError, 'The library is not open!' unless @isOpen
-    raise StandardError, 'Member already exist' if @@members.has_key?(member.name)
+    unless @isOpen
+      raise "The library is not open!"
+    end
+
+    if @@members.has_key?(member.name)
+      raise "Member already exist"
+    end
 
     @@members[member.name] = member
 
@@ -109,8 +116,13 @@ class Library
   end
 
   def serve member
-    raise StandardError, 'The library is not open!' unless @isOpen
-    raise StandardError, 'Member does not have a library card.' unless @@members.has_key?(member.name)
+    unless @isOpen
+      raise "The library is not open!"
+    end
+
+    unless @@members.has_key?(member.name)
+      raise "Member does not have a library card."
+    end
 
     @serving = member
 
@@ -118,11 +130,18 @@ class Library
   end
 
   def check_out *books
-    raise StandardError, 'The library is not open!' unless @isOpen
-    raise StandardError, 'No member is currently being served.' unless @serving
+    unless @isOpen
+      raise "The library is not open!"
+    end
+
+    unless @serving
+      raise "No member is currently being served."
+    end
 
     books.each do |book|
-      raise StandardError, "The library does not have book id #{book.id}" unless @@books.has_key?(book.id)
+      unless @@books.has_key?(book.id)
+        raise "The library does not have book id #{book.id}"
+      end
 
       book.check_out @@calendar.date + 7
       @serving.check_out @@books.delete book.id
@@ -132,11 +151,19 @@ class Library
   end
 
   def check_in *books
-    raise StandardError, 'The library is not open!' unless @isOpen
-    raise StandardError, 'No member is currently being served.' unless @serving
+    unless @isOpen
+      raise "The library is not open!"
+    end
+
+    unless @serving
+      raise "No member is currently being served."
+    end
 
     books.each do |book, some|
-      raise StandardError, "The member does not have book id #{book.id}" unless @serving.books.has_key?(book.id)
+      unless @serving.books.has_key?(book.id)
+        raise "The member does not have book id #{book.id}"
+      end
+
       book.check_in
       @@books[book.id] = book
       @serving.give_back book
@@ -146,11 +173,19 @@ class Library
   end
 
   def renew *books
-    raise StandardError, 'The library is not open!' unless @isOpen
-    raise StandardError, 'No member is currently being served.' unless @serving
+    unless @isOpen
+      raise "The library is not open!"
+    end
+
+    unless @serving
+      raise "No member is currently being served."
+    end
 
     books.each do |book|
-      raise StandardError, "The member does not have book id #{book.id}" unless @serving.books.has_key?(book.id)
+      unless @serving.books.has_key?(book.id)
+        raise "The member does not have book id #{book.id}"
+      end
+
       book.check_out @@calendar.date + 7
     end
 
@@ -158,15 +193,17 @@ class Library
   end
 
   def find_all_overdue_books
-    raise StandardError, 'The library is not open!' unless @isOpen
+    unless @isOpen
+      raise "The library is not open!"
+    end
 
     overdue = "\n"
 
     @@members.each do |key, member|
       if member.books.empty?
-        overdue += member.send_overdue_notice 'No books are overdue'
+        overdue += member.send_overdue_notice "No books are overdue"
       else
-        overdue += member.send_overdue_notice 'Books due:'
+        overdue += member.send_overdue_notice "Books due:"
 
         member.books.each do |bookkey, book|
           overdue += "\n\t"
@@ -179,18 +216,23 @@ class Library
   end
 
   def find_overdue_books
-    raise StandardError, 'The library is not open!' unless @isOpen
-    raise StandardError, 'No member is currently being served.' if @serving.nil?
+    unless @isOpen
+      raise "The library is not open!"
+    end
+
+    if @serving.nil?
+      raise "No member is currently being served."
+    end
 
     overdue = "\n"
 
     if @serving.books.empty?
       overdue = @serving.send_overdue_notice "Member #{@serving.name} has no books overdue"
     else
-      overdue = @serving.send_overdue_notice 'Books due:'
+      overdue = @serving.send_overdue_notice "Books due:"
 
       @serving.books.each do |key, book|
-        overdue += "\n\t"
+        overdue += "\t"
         overdue += book.to_s
       end
     end
@@ -199,7 +241,7 @@ class Library
   end
 
   def close
-    raise StandardError, 'The library is not open!' unless @isOpen
+    raise "The library is not open!" unless @isOpen
 
     @isOpen = false
 
