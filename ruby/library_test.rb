@@ -4,20 +4,12 @@ def colorize text, color_code
   "\e[#{color_code}m#{text}\e[0m"
 end
 
-def red text
-  colorize text, 31
-end
-
-def green text
-  colorize text, 32
-end
-
 def tst test
   if test
-    return green 'PASSED'
+    return colorize 'PASSED', 32
   end
 
-  red 'FAILED'
+  colorize 'FAILED', 31
 end
 
 
@@ -103,79 +95,223 @@ puts "First member overdue notice = 'Oliver: #{warning}': #{tst(members[0].send_
 begin
   library.find_all_overdue_books
 rescue => e
-  notopen = "The library is not open!"
-  puts "#{notopen}: #{tst(e.to_s.eql?(notopen))}"
+  error = "The library is not open!"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
 end
 
-# library.issue_card members[0].name
-# library.serve members[0].name
-# library.find_overdue_books
-# library.check_in
-# library.check_out
-# library.renew
-# library.close
+begin
+  library.issue_card members[0].name
+rescue => e
+  error = "The library is not open!"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
+
+begin
+  library.serve members[0].name
+rescue => e
+  error = "The library is not open!"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
+
+begin
+  library.find_overdue_books
+rescue => e
+  error = "The library is not open!"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
+
+begin
+  library.check_in
+rescue => e
+  error = "The library is not open!"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
+
+begin
+  library.check_out
+rescue => e
+  error = "The library is not open!"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
+
+begin
+  library.renew
+rescue => e
+  error = "The library is not open!"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
+
+begin
+  library.close
+rescue => e
+  error = "The library is not open!"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
 
 
 # let's open the library and try to raise the other errors
-# puts library.open
+libopenstr = 'Today is day 2'
+puts "Open library returns '#{libopenstr}': #{tst(library.open.eql?(libopenstr))}"
 
 
 # try to open a library that is already open
-# library.open
-
-
-# the library does not have book id
-# will test this later
+begin
+  library.open
+rescue => e
+  error = "The library is already open!"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
 
 
 # add a member
-# library.issue_card members[0]
+newmemberstr = "Library card issued to Oliver."
+puts "New member return string '#{newmemberstr}': #{tst(library.issue_card(members[0]).eql?(newmemberstr))}"
 
 
 # try to add a member twice
-# library.issue_card members[0]
+begin
+  library.issue_card members[0]
+rescue => e
+  error = "Member already exist"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
 
 
 # serve a member that does not have a library card
-# library.serve members[1]
+begin
+  library.serve members[1]
+rescue => e
+  error = "Member does not have a library card."
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
 
 
 # no member being served
-# library.check_in 1
-# library.check_out 1
-# library.renew 1
+begin
+  library.check_in books[0], books[1]
+rescue => e
+  error = "No member is currently being served."
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
+
+begin
+  library.check_out books[0], books[1]
+rescue => e
+  error = "No member is currently being served."
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
+
+begin
+  library.renew books[0], books[1]
+rescue => e
+  error = "No member is currently being served."
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
 
 
 # serve a member
-# library.serve members[0]
+servingmember = "Now serving Oliver."
+puts "Serve member method returns '#{servingmember}': #{tst(library.serve(members[0]).eql?(servingmember))}"
 
 
 # check out a book that does not exist
-# library.check_out book_not_in_library
+begin
+  library.check_out book_not_in_library
+rescue => e
+  error = "The library does not have book id 99"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
 
 
 # checkout 5 real books
-# library.check_out books[0], books[5], books[10], books[15], books[20]
+bookscheckedout = "5 books have been checked out to Oliver."
+puts "Checkout books returns '#{bookscheckedout}': #{tst(library.check_out(books[0], books[5], books[10], books[15], books[20]).eql?(bookscheckedout))}"
 
 
 # check a couple of book back in
-# library.check_in members[0].books[0], members[0].books[5]
+bookscheckedin = "Oliver has returned 2 books."
+puts "Checkin books returns '#{bookscheckedin}': #{tst(library.check_in(members[0].books[0], members[0].books[5]).eql?(bookscheckedin))}"
+
+
+# check in a book we don't have
+begin
+  library.check_in book_not_in_library
+rescue => e
+  error = "The member does not have book id 99"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
 
 
 # renew a couple of books
-# library.renew members[0].books[10], members[0].books[15]
+booksrenewed = "2 books have been renewed for Oliver."
+puts "Rewew books returns '#{booksrenewed}': #{tst(library.renew(members[0].books[10], members[0].books[15]).eql?(booksrenewed))}"
+
+
+# renew a book we don't have
+begin
+  library.renew book_not_in_library
+rescue => e
+  error = "The member does not have book id 99"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
 
 
 # find all overdue books
-# puts library.find_all_overdue_books
+nooverduebooks = "Oliver: Books due: No books are overdue"
+puts "There are no books overdue: #{tst(library.find_all_overdue_books.eql?(nooverduebooks))}"
 
 
-# the member does not have book id
+# ensure current member does not have overdue books
+nooverduebooks = "Oliver: Member Oliver has no books overdue"
+puts "Oliver does not have any overdue books: #{tst(library.find_overdue_books.eql?(nooverduebooks))}"
+
+
+# almost there, let's make sure the overdue books methods print correctly
+
+# add a couple more members
+library.issue_card members[1]
+library.issue_card members[2]
+
+
+# advance the calendar by 8 days
+calendar.advance
+calendar.advance
+calendar.advance
+calendar.advance
+calendar.advance
+calendar.advance
+calendar.advance
+calendar.advance
+
+
+alloverduebooks = "Oliver: Books due:
+\t10: Elisabeth is Missing, by Emma Healey
+\t15: The Murder Bag, by Tony Parsons
+\t20: Unlucky 13, by James Patterson
+Jack: Books due: No books are overdue
+Charlie: Books due: No books are overdue"
+puts "All overdue books string looks like \n#{alloverduebooks}: #{tst(library.find_all_overdue_books.length.eql?(213))}"
 
 
 # find_overdue_books
-# library.find_overdue_books
+overduebooks = "Oliver: Books due:
+\t10: Elisabeth is Missing, by Emma Healey
+\t15: The Murder Bag, by Tony Parsons
+\t20: Unlucky 13, by James Patterson"
+puts "Books by member call returns \n'#{overduebooks}': #{tst(library.find_overdue_books.eql?(overduebooks))}"
 
 
 # close
+closestr = "Good night"
+puts "Closing the library returns '#{closestr}': #{tst(library.close.eql?(closestr))}"
+
+begin
+  library.find_overdue_books
+rescue => e
+  error = "The library is not open!"
+  puts "#{error}: #{tst(e.to_s.eql?(error))}"
+end
+
 # quit
+quitstr = "The library is now closed for renovations"
+puts "Quitting the library returs '#{quitstr}': #{tst(library.quit.eql?(quitstr))}"

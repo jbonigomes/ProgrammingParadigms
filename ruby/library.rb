@@ -197,19 +197,31 @@ class Library
       raise "The library is not open!"
     end
 
-    overdue = "\n"
+    overdue = ""
+    firstloop = true
 
     @@members.each do |key, member|
-      if member.books.empty?
-        overdue += member.send_overdue_notice "No books are overdue"
-      else
-        overdue += member.send_overdue_notice "Books due:"
+      nobooksoverdue = true
 
-        member.books.each do |bookkey, book|
+      unless firstloop
+        overdue += "\n"
+      end
+
+      overdue += member.send_overdue_notice "Books due: "
+
+      member.books.each do |bookkey, book|
+        if book.due_date < @@calendar.date
+          nobooksoverdue = false
           overdue += "\n\t"
           overdue += book.to_s
         end
       end
+
+      if nobooksoverdue
+        overdue += "No books are overdue"
+      end
+
+      firstloop = false
     end
 
     overdue
@@ -224,17 +236,19 @@ class Library
       raise "No member is currently being served."
     end
 
-    overdue = "\n"
+    nobooksoverdue = true
+    overdue        = @serving.send_overdue_notice "Books due:"
 
-    if @serving.books.empty?
-      overdue = @serving.send_overdue_notice "Member #{@serving.name} has no books overdue"
-    else
-      overdue = @serving.send_overdue_notice "Books due:"
-
-      @serving.books.each do |key, book|
-        overdue += "\t"
+    @serving.books.each do |key, book|
+      if book.due_date < @@calendar.date
+        nobooksoverdue = false
+        overdue += "\n\t"
         overdue += book.to_s
       end
+    end
+
+    if nobooksoverdue
+      return @serving.send_overdue_notice "Member #{@serving.name} has no books overdue"
     end
 
     overdue
