@@ -1,14 +1,7 @@
 #lang racket
 
-; Repeatedly do the following:
-;   Find a location containing a singleton set (a set containing just one number).
-;     For every other set in the same row, the same column, or the same 3x3 box,
-;     remove that number (if preset).
-;   Find a number in a set that does not occur in any other set in the same row
-;   (or column, or box).
-;     Reduce that set to a singleton containing that one number.
-; Quit when every set is a singleton, or when no more numbers can be removed
-; from any set.
+; Please accept my sincere apologies, for I did not have enough time to
+; implement most of this agorithm
 
 (define n 5)
 (define x 1)
